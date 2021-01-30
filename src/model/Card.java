@@ -42,4 +42,9 @@ public class Card {
 		return  "/resources/drawable-hdpi/"+cardName+cardColor+".png";		
 	}
 	
+	public String getColorImagePath() {
+		final String cardColor = color.toString().toLowerCase();
+		return  "/resources/drawable-hdpi/"+cardColor+".png";		
+	}
+	
 }

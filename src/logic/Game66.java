@@ -31,6 +31,14 @@ public class Game66 {
 		protected boolean closed = false;
 		protected Lead lead;
 		protected boolean showComputerCards = false;
+		protected ArrayList<Button> playerCardsButtons = new ArrayList<Button>();
+		protected ArrayList<Button> computerCardsButtons = new ArrayList<Button>();
+		protected Button btnDeckCards;
+		protected Button btnTrumpCard;
+		protected Button btnPlayedCardComputer;
+		protected Button btnPlayedCardPlayer;
+		protected Label lblScoreComputer;
+		protected Label lblScorePlayer;
 		
 		
 
@@ -60,90 +68,47 @@ public class Game66 {
 	protected void createContents() {
 		shell = new Shell();
 		shell.setSize(800, 600);
-		shell.setText("Santase 66");	
-		ArrayList<Button> playerCardsButtons = new ArrayList<Button>();
-		ArrayList<Button> computerCardsButtons = new ArrayList<Button>();
+		shell.setText("Santase 66");
 		
-		Button btnPlayerCard1 = new Button(shell, SWT.NONE);		
-		btnPlayerCard1.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnPlayerCard1.setBounds(41, 402, 114, 149);
-		playerCardsButtons.add(btnPlayerCard1);
+		playerCardsButtons.clear();
+		computerCardsButtons.clear();
 		
-		Button btnPlayerCard2 = new Button(shell, SWT.NONE);
-		btnPlayerCard2.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnPlayerCard2.setBounds(161, 402, 114, 149);
-		playerCardsButtons.add(btnPlayerCard2);
+		//Creating Player Cards buttons
+		for (int i = 40; i <= 640; i+=120) {
+			Button button = new Button(shell, SWT.NONE);		
+			button.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
+			button.setBounds(i, 400, 115, 150);
+			playerCardsButtons.add(button);			
+		}
 		
-		Button btnPlayerCard3 = new Button(shell, SWT.NONE);
-		btnPlayerCard3.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnPlayerCard3.setBounds(281, 402, 114, 149);
-		playerCardsButtons.add(btnPlayerCard3);
-		
-		Button btnPlayerCard4 = new Button(shell, SWT.NONE);
-		btnPlayerCard4.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnPlayerCard4.setBounds(401, 402, 114, 149);
-		playerCardsButtons.add(btnPlayerCard4);		
-		
-		Button btnPlayerCard5 = new Button(shell, SWT.NONE);
-		btnPlayerCard5.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnPlayerCard5.setBounds(521, 402, 114, 149);
-		playerCardsButtons.add(btnPlayerCard5);
-		
-		Button btnPlayerCard6 = new Button(shell, SWT.NONE);
-		btnPlayerCard6.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnPlayerCard6.setBounds(641, 402, 114, 149);
-		playerCardsButtons.add(btnPlayerCard6);
-		
-		Button btnComputerCard1 = new Button(shell, SWT.NONE);
-		btnComputerCard1.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnComputerCard1.setBounds(41, 10, 114, 149);
-		computerCardsButtons.add(btnComputerCard1);
-		
-		Button btnComputerCard2 = new Button(shell, SWT.NONE);
-		btnComputerCard2.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnComputerCard2.setBounds(161, 10, 114, 149);
-		computerCardsButtons.add(btnComputerCard2);
-		
-		Button btnComputerCard3 = new Button(shell, SWT.NONE);
-		btnComputerCard3.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnComputerCard3.setBounds(281, 10, 114, 149);
-		computerCardsButtons.add(btnComputerCard3);
-		
-		Button btnComputerCard4 = new Button(shell, SWT.NONE);
-		btnComputerCard4.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnComputerCard4.setBounds(401, 10, 114, 149);
-		computerCardsButtons.add(btnComputerCard4);
-		
-		Button btnComputerCard5 = new Button(shell, SWT.NONE);
-		btnComputerCard5.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnComputerCard5.setBounds(521, 10, 114, 149);
-		computerCardsButtons.add(btnComputerCard5);
-		
-		Button btnComputerCard6 = new Button(shell, SWT.NONE);
-		btnComputerCard6.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-		btnComputerCard6.setBounds(641, 10, 114, 149);
-		computerCardsButtons.add(btnComputerCard6);
-		
-		Button btnDeckCards = new Button(shell, SWT.NONE);
+		//Creating Computer Cards buttons
+		for (int i = 40; i <= 640; i+=120) {
+			Button button = new Button(shell, SWT.NONE);		
+			button.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
+			button.setBounds(i, 10, 115, 150);
+			computerCardsButtons.add(button);			
+		}
+				
+		btnDeckCards = new Button(shell, SWT.NONE);
 		btnDeckCards.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
 		btnDeckCards.setBounds(41, 196, 114, 149);
 		btnDeckCards.setToolTipText("Closed");
 		
-		Button btnTrumpCard = new Button(shell, SWT.NONE);
+		btnTrumpCard = new Button(shell, SWT.NONE);
 		btnTrumpCard.setBounds(130, 196, 114, 149);
 		btnTrumpCard.setToolTipText("Change card");
 		
-		Button btnPlayedCardComputer = new Button(shell, SWT.NONE);
+		btnPlayedCardComputer = new Button(shell, SWT.NONE);
 		btnPlayedCardComputer.setBounds(348, 165, 114, 149);
 		
-		Button btnPlayedCardPlayer = new Button(shell, SWT.NONE);
+		btnPlayedCardPlayer = new Button(shell, SWT.NONE);
 		btnPlayedCardPlayer.setBounds(468, 247, 114, 149);
 		
-		Label lblScoreComputer = new Label(shell, SWT.NONE);
+		lblScoreComputer = new Label(shell, SWT.NONE);
 		lblScoreComputer.setBounds(641, 165, 55, 15);
 		lblScoreComputer.setText("Score:");
 		
-		Label lblScorePlayer = new Label(shell, SWT.NONE);
+		lblScorePlayer = new Label(shell, SWT.NONE);
 		lblScorePlayer.setText("Score:");
 		lblScorePlayer.setBounds(641, 381, 55, 15);
 		
@@ -155,40 +120,39 @@ public class Game66 {
 		btnNewGame.setText("New Game");
 		btnNewGame.setBounds(641, 320, 120, 25);
 		
+		btnNewGame.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {	
+				startNewGame();
+				render();
+				
+			}
+		});
+		
 		//Create listeners on player cards buttons.
+		//What happens when you click a player card
 		for (int i = 0; i < playerCardsButtons.size(); i++) {
 			final int index = i;
 			playerCardsButtons.get(index).addMouseListener(new MouseAdapter() {
 				@Override
 				public  void mouseDown(MouseEvent e) {
 					if(!wait) {
-						if( userPlayer.getCards().size() >= index+1) {
+						if( userPlayer.getCards().size() >= index+1) {				//can't click on empty card
 							if(isTheCardAllowed(userPlayer.getCards().get(index))) {
 								wait = true;
-								//checking for pair
-								if(userPlayer.getCards().get(index).getName() == CardNames.QUEEN) {
-									int pairScore = checkForPair(userPlayer.getCards().get(index));
-									if(pairScore>0) {
-										PairDialog pairDialog = new PairDialog(shell, 1, pairScore);
-										pairDialog.open();
-										userPlayer.setScore(userPlayer.getScore() + pairScore);
-										lblScorePlayer.setText("Score:" + userPlayer.getScore());
-									}									
-								}
+								//checking for marriage								
+								checkForMarriage(userPlayer.getCards().get(index));		
+								
 								userPlayer.setPlayedCard(userPlayer.getCards().get(index));
-								userPlayer.getCards().remove(index);				
-								playerCardsButtons.get(index).setImage(SWTResourceManager.getImage(Game66.class, null));
-								btnPlayedCardPlayer.setImage(SWTResourceManager.getImage(Game66.class, userPlayer.getPlayedCard().getCardImagePath()));
+								userPlayer.getCards().remove(index);							
 								//when player leads computer must reply with card.
 								if(lead == Lead.PLAYER) {
-									
-									computerPlayer.setPlayedCard(computerReplyCard());
-									btnPlayedCardComputer.setImage(SWTResourceManager.getImage(Game66.class, computerPlayer.getPlayedCard().getCardImagePath()));	
+									Card replyCard = computerReplyCard();									
+									computerPlayer.setPlayedCard(replyCard);
+									computerPlayer.getCards().remove(replyCard);
 								}
-								//If computer leads trickBattle determines who wins the trick.
-								else {
-									trickBattle();
-								}								
+								
+								render();								
 							}								
 						}						
 					}					
@@ -196,92 +160,23 @@ public class Game66 {
 			});
 		}
 		
-		btnNewGame.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {	
-				startNewGame();
-				//Visualize all the cards
-				if (showComputerCards == true) {
-					for (int i = 0; i < 6; i++) {
-						computerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class, computerPlayer.getCards().get(i).getCardImagePath()));
-					}
-				}
-				
-				for (int i = 0; i < 6; i++) {					
-						playerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class, userPlayer.getCards().get(i).getCardImagePath()));
-				}
-				
-				btnTrumpCard.setImage(SWTResourceManager.getImage(Game66.class, trumpCard.getCardImagePath()));
-				btnPlayedCardComputer.setImage(SWTResourceManager.getImage(Game66.class, null));
-				btnPlayedCardPlayer.setImage(SWTResourceManager.getImage(Game66.class, null));
-				lblScoreComputer.setText("Score:");
-				lblScorePlayer.setText("Score:");
-				
-			}
-		});
-
-		
 		btnPlayedCardPlayer.addMouseListener(new MouseAdapter() {
 			@Override
 			public  void mouseDown(MouseEvent e) {				
-				//Visualize the cards if the cards are less than six the catch will set the rest to empty.
-				if (wait) {
-					if (showComputerCards == true) {
-
-						for (int i = 0; i < 6; i++) {
-							try {
-								computerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class,
-										computerPlayer.getCards().get(i).getCardImagePath()));
-							} catch (Exception e1) {
-								computerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class, null));
-							}
-						}
-					}
-					for (int i = 0; i < 6; i++) {
-						try {
-							playerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class,
-									userPlayer.getCards().get(i).getCardImagePath()));
-						} catch (Exception e1) {
-							playerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class, null));
-						}
-					}
-					
-					btnPlayedCardComputer.setImage(SWTResourceManager.getImage(Game66.class, null));
-					btnPlayedCardPlayer.setImage(SWTResourceManager.getImage(Game66.class, null));
-					userPlayer.setPlayedCard(null);
-					computerPlayer.setPlayedCard(null);
-					lblScorePlayer.setText("Score:" + userPlayer.getScore());
-					lblScoreComputer.setText("Score:" + computerPlayer.getScore());
-					if (closed == true) {
-						final String trumpColor = trumpCard.getColor().toString().toLowerCase();
-						btnTrumpCard.setImage(SWTResourceManager.getImage(Game66.class,
-								"/resources/drawable-hdpi/" + trumpColor + ".png"));
-					}
-					
-					if (!computerPlayer.getCards().isEmpty()) {
-						if (lead == Lead.COMPUTER) {
-							if(computerPlayer.getScore() >= 66) {
-								endGame();
-							}
-							
-							computerPlayer.setPlayedCard(computerPlayCard());
-							computerPlayer.getCards().remove(computerPlayer.getPlayedCard());
-							btnPlayedCardComputer.setImage(SWTResourceManager.getImage(Game66.class,
-									computerPlayer.getPlayedCard().getCardImagePath()));
-						}						
-					}
-					
+				if (wait) {										
+					trickBattle();
+					endGameCheck();
+					//when computer leads computer must play card.
+					if (lead == Lead.COMPUTER) {
+						computerPlayer.setPlayedCard(computerPlayCard());
+						computerPlayer.getCards().remove(computerPlayer.getPlayedCard());
+					}						
 					wait = false;
-					
-					if (userPlayer.getCards().isEmpty() && computerPlayer.getCards().isEmpty()) {
-						endGame();
-					} 
-					
-					if(lead == Lead.PLAYER && userPlayer.getScore()>=66) {
-						endGame();
-					}
+					render();					
 				}
 			}
+
+			
 		});
 		
 		//Change with a nine trump card
@@ -289,34 +184,26 @@ public class Game66 {
 			@Override
 			public  void mouseDown(MouseEvent e) {
 				//If player has trump nine card, he can change it from the deck
-				if (deck.size() > 1 && deck.size() < 11) {					
-					if (!getTrumpColorCards(userPlayer).isEmpty()
-							&& getTrumpColorCards(userPlayer).get(0).getName() == CardNames.NINE) {
-						userPlayer.getCards().add(trumpCard);
-						trumpCard = getTrumpColorCards(userPlayer).get(0);
-						userPlayer.getCards().remove(getTrumpColorCards(userPlayer).get(0));
+					if (deck.size() > 1 && deck.size() < 11 && closed == false && lead == Lead.PLAYER) {					
+						if (!getTrumpColorCards(userPlayer).isEmpty()
+								&& getTrumpColorCards(userPlayer).get(0).getName() == CardNames.NINE) {
+							userPlayer.getCards().add(trumpCard);
+							trumpCard = getTrumpColorCards(userPlayer).get(0);
+							userPlayer.getCards().remove(getTrumpColorCards(userPlayer).get(0));
+							render();
 						
-						for (int i = 0; i < 6; i++) {
-							try {
-								playerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class,
-										userPlayer.getCards().get(i).getCardImagePath()));
-							} catch (Exception e1) {
-								playerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class, null));
-							}
-						}
-						
-						btnTrumpCard.setImage(SWTResourceManager.getImage(Game66.class, trumpCard.getCardImagePath()));
-					} 
-				}
+						} 
+					}
 			}
 		});
+		
 		//Close
 		btnDeckCards.addMouseListener(new MouseAdapter() {
 			@Override
 			public  void mouseDown(MouseEvent e) {	
-				if(lead == Lead.PLAYER && deck.size() > 1 && deck.size() < 11) {
-					btnTrumpCard.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/" + trumpCard.getColor() + ".png"));
+				if(lead == Lead.PLAYER && deck.size() > 1 && deck.size() < 11) {					
 					closed = true;
+					render();
 				}
 			}
 		});
@@ -328,27 +215,14 @@ public class Game66 {
 				showComputerCards = (showComputerCards == true) ? false : true;
 				String btnShowComputerCadsText = (showComputerCards == true) ? "Hide computer cards" : "Show computer cards";
 				btnShowComputerCards.setText(btnShowComputerCadsText);				
-				
-				for (int i = 0; i < 6; i++) {
-					try {
-						String cardImagePath = (showComputerCards == true) ? computerPlayer.getCards().get(i).getCardImagePath() : "/resources/drawable-hdpi/card_back.png";
-						computerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class,
-								cardImagePath));
-					} catch (Exception e1) {
-						computerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class, null));
-					}
-				} 
+				render();				
 			}
-		});
-		
+		});		
 	}
 	
 
 	
 	private void startNewGame() {
-		
-		userPlayer.setPlayedCard(null);
-		computerPlayer.setPlayedCard(null);
 		
 		deck = getShuffledDeck();		
 		
@@ -363,17 +237,21 @@ public class Game66 {
 		trumpCard = getTrumpCard();		
 		
 		wait = false;
-		closed = false;
 		
 	}
 	
-	private void endGame() {		
-		EndGameDialog dialog = new EndGameDialog(shell, 1, userPlayer.getScore(), computerPlayer.getScore());
+	private void endGame(boolean playerWin) {		
+		EndGameDialog dialog = new EndGameDialog(shell, 1, userPlayer.getScore(), computerPlayer.getScore(), playerWin);
 		dialog.open();
 		shell.close();
-		open();				
+		Game66 window = new Game66();
+		window.open();
 	}
 	
+	
+	/*
+	  Computer playing cards logic
+	 */
 	
 	private Card computerReplyCard() {	
 		
@@ -381,17 +259,21 @@ public class Game66 {
 		
 		ArrayList<Card> trumpColorCards = getTrumpColorCards(computerPlayer);
 		
+		ArrayList<Card> noTrumpColorCards = getNoTrumpColorCards(computerPlayer);
+		
 		if(!closed) {			
 			//if player's card is not trump card and can be taken
 			if(!wantedColorCards.isEmpty() && wantedColorCards.get(wantedColorCards.size()-1).getPoints()>userPlayer.getPlayedCard().getPoints()) {
-				return computerTakesTheCard(wantedColorCards);					
+				for (Card card : wantedColorCards) {
+					if(card.getPoints()>userPlayer.getPlayedCard().getPoints()) {
+						return card;
+					}			
+				}					
 			}
 			//if player's card is not trump card and is higher card
 			if(userPlayer.getPlayedCard().getPoints()>= 10 && userPlayer.getPlayedCard().getColor()!=trumpCard.getColor()) {
 				//if there is any trump cards in the hand
 				if(!trumpColorCards.isEmpty()) {
-					computerPlayer.getCards().remove(trumpColorCards.get(0));
-					computerWins(trumpColorCards.get(0).getPoints() + userPlayer.getPlayedCard().getPoints());
 					return trumpColorCards.get(0);
 				}			
 			}		
@@ -401,7 +283,7 @@ public class Game66 {
 				if(userPlayer.getPlayedCard().getPoints() == 10) {
 					//if there is an Ace
 					if(!wantedColorCards.isEmpty() && wantedColorCards.get(wantedColorCards.size()-1).getPoints() ==11) {
-						return computerTakesTheCard(wantedColorCards);						
+						return wantedColorCards.get(wantedColorCards.size()-1);						
 					}					
 				}			
 			}			
@@ -410,77 +292,26 @@ public class Game66 {
 		if(closed) {
 			//if the card can be taken
 			if(!wantedColorCards.isEmpty() && wantedColorCards.get(wantedColorCards.size()-1).getPoints()>userPlayer.getPlayedCard().getPoints()) {
-				return computerTakesTheCard(wantedColorCards);				
+				for (Card card : wantedColorCards) {
+					if(card.getPoints()>userPlayer.getPlayedCard().getPoints()) {
+						return card;
+					}			
+				}				
 			}			
 			//if there is lower card with the same color
-			if(!wantedColorCards.isEmpty()) {				
-				computerPlayer.getCards().remove(wantedColorCards.get(0));
-				playerWins(wantedColorCards.get(0).getPoints() + userPlayer.getPlayedCard().getPoints());
-				
+			if(!wantedColorCards.isEmpty()) {	
 				return wantedColorCards.get(0);								
 			}
 			//Using a trump card 
 			if(!trumpColorCards.isEmpty()) {
-				computerPlayer.getCards().remove(trumpColorCards.get(0));
-				computerWins(trumpColorCards.get(0).getPoints() + userPlayer.getPlayedCard().getPoints());
 				return trumpColorCards.get(0);
 			}		
 		}	
 		//Player wins trick
-		ArrayList<Card> noTrumpColorCards = getNoTrumpColorCards(computerPlayer);
-		
-		computerPlayer.getCards().remove(noTrumpColorCards.get(0));
-		playerWins(noTrumpColorCards.get(0).getPoints() + userPlayer.getPlayedCard().getPoints());
 				
 		return noTrumpColorCards.get(0);
 		
 	}
-	
-
-	private Card computerTakesTheCard(ArrayList<Card> wantedColorCards) {
-		
-		Card returnedCard = new Card();
-
-		for (Card card : wantedColorCards) {
-			if(card.getPoints()>userPlayer.getPlayedCard().getPoints()) {
-				returnedCard = card;
-				break;
-			}			
-		}
-		
-		computerPlayer.getCards().remove(returnedCard);
-		computerWins(returnedCard.getPoints() + userPlayer.getPlayedCard().getPoints());
-		
-		return returnedCard;
-	}
-	
-	private void trickBattle() {
-		int trickScore = userPlayer.getPlayedCard().getPoints() + computerPlayer.getPlayedCard().getPoints();
-		
-		//if card are the same color
-		if(userPlayer.getPlayedCard().getColor() == computerPlayer.getPlayedCard().getColor()) {
-			//if computer card is bigger computer wins
-			if(userPlayer.getPlayedCard().getPoints() < computerPlayer.getPlayedCard().getPoints()) {
-				computerWins(trickScore);
-			}
-			//if player card is bigger player wins
-			if(userPlayer.getPlayedCard().getPoints() > computerPlayer.getPlayedCard().getPoints()) {
-				playerWins(trickScore);
-			}
-		}
-		
-		//if cards are different color
-		if(userPlayer.getPlayedCard().getColor() != computerPlayer.getPlayedCard().getColor()) {
-			//if player card is trump card player wins
-			if(userPlayer.getPlayedCard().getColor() == trumpCard.getColor()) {
-				playerWins(trickScore);
-			}
-			else {
-				computerWins(trickScore);
-			}
-		}
-	}
-
 	
 	private Card computerPlayCard() {
 		
@@ -496,6 +327,47 @@ public class Game66 {
 		
 	}
 	
+	
+	private void trickBattle() {
+		int trickScore = userPlayer.getPlayedCard().getPoints() + computerPlayer.getPlayedCard().getPoints();
+		
+		//if card are the same color
+		if(userPlayer.getPlayedCard().getColor() == computerPlayer.getPlayedCard().getColor()) {
+			//if computer card is bigger computer wins
+			if(userPlayer.getPlayedCard().getPoints() < computerPlayer.getPlayedCard().getPoints()) {
+				computerWins(trickScore);
+			}
+			//if player card is bigger player wins
+			if(userPlayer.getPlayedCard().getPoints() > computerPlayer.getPlayedCard().getPoints()) {
+				playerWins(trickScore);
+			}
+		}
+		//if card are not the same color
+		if(userPlayer.getPlayedCard().getColor() != computerPlayer.getPlayedCard().getColor()) {
+			//If there is no trump card
+			if(computerPlayer.getPlayedCard().getColor()!=trumpCard.getColor() && userPlayer.getPlayedCard().getColor()!=trumpCard.getColor()) {
+				if(lead == Lead.COMPUTER) {
+					computerWins(trickScore);
+				}
+				else {
+					playerWins(trickScore);
+				}			
+			}
+			//If computer card is a trump card
+			if(computerPlayer.getPlayedCard().getColor()==trumpCard.getColor() && userPlayer.getPlayedCard().getColor()!=trumpCard.getColor()){
+				computerWins(trickScore);
+			}
+			
+			//If player card is a trump card
+			if(computerPlayer.getPlayedCard().getColor()!=trumpCard.getColor() && userPlayer.getPlayedCard().getColor()==trumpCard.getColor()){
+				playerWins(trickScore);
+			}
+		}
+		userPlayer.setPlayedCard(null);
+		computerPlayer.setPlayedCard(null);
+	}
+
+	
 	private void computerWins(int trickScore) {
 		int lastTenPoints = 0;
 		if(userPlayer.getCards().isEmpty() && computerPlayer.getCards().isEmpty()) {
@@ -503,8 +375,7 @@ public class Game66 {
 		}		
 		computerPlayer.setScore(computerPlayer.getScore() + trickScore + lastTenPoints);
 		lead = Lead.COMPUTER;
-		getCardFromTheDeck(computerPlayer, userPlayer);
-		
+		getCardFromTheDeck(computerPlayer, userPlayer);		
 	}
 	
 	private void playerWins(int trickScore) {
@@ -517,8 +388,11 @@ public class Game66 {
 		getCardFromTheDeck(userPlayer, computerPlayer);
 	}
 	
-
-	//Card Functions
+	
+	/*
+	 Card Functions
+	 */
+	
 	
 	//returns the first six cards in the deck.
 	private ArrayList<Card> getPlayingCards(){
@@ -624,40 +498,133 @@ public class Game66 {
 		return noTrumpColorCards;
 	}
 	
+		
+	
+	//Help functions
+	
 	//Checks if the card that User Player gives matches the game rules.
-	private boolean isTheCardAllowed(Card card) {
-		if(lead == Lead.COMPUTER && closed == true) {
-			if(card.getColor() == computerPlayer.getPlayedCard().getColor()){
-				return true;
-			}
-			
-			if(card.getColor() == trumpCard.getColor() && getWantedColorCards(userPlayer, computerPlayer.getPlayedCard()).isEmpty()) {
-				return true;
-			}
-			
-			if(card.getColor() != trumpCard.getColor() && getWantedColorCards(userPlayer, computerPlayer.getPlayedCard()).isEmpty() && getTrumpColorCards(userPlayer).isEmpty()) {
-				return true;
-			}
-			
-			return false;
-		}
-		
-		return true;
-		
-	}
-	//Checks for pair and trump pair
-	private int checkForPair(Card queenCard) {
-		if (deck.size() < 11 && userPlayer.getScore()>0 && lead == Lead.PLAYER) {
-			for (Card card : userPlayer.getCards()) {
-				if (card.getName() == CardNames.KING && card.getColor() == queenCard.getColor()) {
-					if (card.getColor() == trumpCard.getColor()) {
-						return 40;
-					}
-					return 20;
+		private boolean isTheCardAllowed(Card card) {
+			if(lead == Lead.COMPUTER && closed == true) {
+				if(card.getColor() == computerPlayer.getPlayedCard().getColor()){
+					return true;
 				}
-			} 
+				
+				if(card.getColor() == trumpCard.getColor() && getWantedColorCards(userPlayer, computerPlayer.getPlayedCard()).isEmpty()) {
+					return true;
+				}
+				
+				if(card.getColor() != trumpCard.getColor() && getWantedColorCards(userPlayer, computerPlayer.getPlayedCard()).isEmpty() && getTrumpColorCards(userPlayer).isEmpty()) {
+					return true;
+				}
+				
+				return false;
+			}
+			
+			return true;
+			
 		}
-		return 0;
+		
+		//Checks for marriage queen and king from the same color
+		private void checkForMarriage(Card chekedCard) {
+			if(chekedCard.getName() == CardNames.QUEEN) {
+				int marriagePoints = 0;
+				if (deck.size() < 11 && userPlayer.getScore()>0 && lead == Lead.PLAYER) {
+					for (Card card : userPlayer.getCards()) {
+						if (card.getName() == CardNames.KING && card.getColor() == chekedCard.getColor()) {
+							marriagePoints = 20;
+						}						
+						if (card.getName() == CardNames.KING && card.getColor() == trumpCard.getColor() && card.getColor() == chekedCard.getColor()) {
+							marriagePoints = 40;
+						}						
+					}
+				}
+				
+				if(marriagePoints>0) {
+					MarriageDialog marriageDialog = new MarriageDialog(shell, 1, marriagePoints);
+					marriageDialog.open();
+					userPlayer.setScore(userPlayer.getScore() + marriagePoints);
+					lblScorePlayer.setText("Score:" + userPlayer.getScore());
+					endGameCheck();
+				}
+			}	
+		}
+	
+	private void endGameCheck() {
+		if (lead == Lead.COMPUTER && computerPlayer.getScore() >= 66) {
+			endGame(false);			
+		}
+		
+		if(lead == Lead.PLAYER && userPlayer.getScore()>=66) {
+			endGame(true);
+		}
+		
+		if (userPlayer.getCards().isEmpty() && computerPlayer.getCards().isEmpty() && deck.isEmpty()) {
+			if(lead == Lead.COMPUTER) {
+				endGame(false);
+			}
+			else{
+				endGame(true);
+			}			
+		}
+		
+		if (userPlayer.getCards().isEmpty() && computerPlayer.getCards().isEmpty() && !deck.isEmpty()) {
+			if(userPlayer.getScore()>=66) {
+				endGame(true);
+			}
+			else{
+				endGame(false);
+			}			
+		}	
+	}
+	
+	
+	//Refresh the view of all the elements of the GUI
+	private void render() {
+		if (showComputerCards == true) {
+
+			for (int i = 0; i < 6; i++) {
+				try {
+					computerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class,
+							computerPlayer.getCards().get(i).getCardImagePath()));
+				} catch (Exception e1) {//if the cards are less than six the catch will set the rest to null
+					computerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class, null));
+				}
+			}
+		}
+		for (int i = 0; i < 6; i++) {
+			try {
+				playerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class,
+						userPlayer.getCards().get(i).getCardImagePath()));
+			} catch (Exception e1) {//if the cards are less than six the catch will set the rest to null
+				playerCardsButtons.get(i).setImage(SWTResourceManager.getImage(Game66.class, null));
+			}
+		}
+				
+		String btnPlayedCardComputerImagePath = (computerPlayer.getPlayedCard() == null) ? "null" : computerPlayer.getPlayedCard().getCardImagePath();
+		btnPlayedCardComputer.setImage(SWTResourceManager.getImage(Game66.class, btnPlayedCardComputerImagePath));
+		
+		String btnPlayedCardPlayerImagePath = (userPlayer.getPlayedCard() == null) ? "null" : userPlayer.getPlayedCard().getCardImagePath();
+		btnPlayedCardPlayer.setImage(SWTResourceManager.getImage(Game66.class, btnPlayedCardPlayerImagePath));
+		
+		lblScoreComputer.setText("Score:" + computerPlayer.getScore());
+		lblScorePlayer.setText("Score:" + userPlayer.getScore());
+		
+		btnTrumpCard.setImage(SWTResourceManager.getImage(Game66.class, trumpCard.getCardImagePath()));
+		btnDeckCards.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
+		//Change the trump card only to color image
+		if (closed == true) {
+			if(deck.isEmpty()) {
+				btnDeckCards.setImage(SWTResourceManager.getImage(Game66.class, trumpCard.getColorImagePath()));
+				btnTrumpCard.setImage(SWTResourceManager.getImage(Game66.class, null));	
+			}
+			else {
+				btnDeckCards.setImage(SWTResourceManager.getImage(Game66.class, trumpCard.getCardImagePath()));
+				btnTrumpCard.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
+			}
+			
+		}
+		
+		
 	}
 	
 }

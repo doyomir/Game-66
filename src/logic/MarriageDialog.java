@@ -10,21 +10,21 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Rectangle;
 
-public class PairDialog extends Dialog {
+public class MarriageDialog extends Dialog {
 
 	protected Object result;
-	protected Shell shlPair;
-	protected int pairScore;
+	protected Shell shlMarriage;
+	protected int marriageScore;
 
 	/**
 	 * Create the dialog.
 	 * @param parent
 	 * @param style
 	 */
-	public PairDialog(Shell parent, int style, int pairScore) {
+	public MarriageDialog(Shell parent, int style, int marriageScore) {
 		super(parent, style);
 		setText("SWT Dialog");
-		this.pairScore = pairScore;
+		this.marriageScore = marriageScore;
 	}
 
 	/**
@@ -33,12 +33,12 @@ public class PairDialog extends Dialog {
 	 */
 	public Object open() {
 		createContents();
-		shlPair.open();
-		shlPair.layout();
+		shlMarriage.open();
+		shlMarriage.layout();
 		Display display = getParent().getDisplay();
 		Rectangle screenSize = display.getPrimaryMonitor().getBounds();
-		shlPair.setLocation((screenSize.width - shlPair.getBounds().width) / 2, (screenSize.height - shlPair.getBounds().height) / 2);
-		while (!shlPair.isDisposed()) {
+		shlMarriage.setLocation((screenSize.width - shlMarriage.getBounds().width) / 2, (screenSize.height - shlMarriage.getBounds().height) / 2);
+		while (!shlMarriage.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -50,19 +50,19 @@ public class PairDialog extends Dialog {
 	 * Create contents of the dialog.
 	 */
 	private void createContents() {
-		shlPair = new Shell(getParent(), SWT.TITLE);
-		shlPair.setSize(187, 110);
-		shlPair.setText("Pair");
+		shlMarriage = new Shell(getParent(), SWT.TITLE);
+		shlMarriage.setSize(187, 110);
+		shlMarriage.setText("Marriage");
 		
-		Label lblNewLabel = new Label(shlPair, SWT.BORDER | SWT.CENTER);
-		lblNewLabel.setBounds(63, 10, 55, 15);
-		lblNewLabel.setText(pairScore + "!");
+		Label marriageLabel = new Label(shlMarriage, SWT.BORDER | SWT.CENTER);
+		marriageLabel.setBounds(63, 10, 55, 15);
+		marriageLabel.setText(marriageScore + "!");
 		
-		Button btnOk = new Button(shlPair, SWT.NONE);
+		Button btnOk = new Button(shlMarriage, SWT.NONE);
 		btnOk.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				shlPair.dispose();
+				shlMarriage.dispose();
 			}
 		});
 		btnOk.setBounds(53, 42, 75, 25);

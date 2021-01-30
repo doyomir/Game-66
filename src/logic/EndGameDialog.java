@@ -20,17 +20,19 @@ public class EndGameDialog extends Dialog {
 	protected Shell shlEndGame;
 	protected int scorePlayer;
 	protected int scoreComputer;
+	protected boolean playerWin;
 
 	/**
 	 * Create the dialog.
 	 * @param parent
 	 * @param style
 	 */
-	public EndGameDialog(Shell parent, int style, int scorePlayer, int scoreComputer) {		
+	public EndGameDialog(Shell parent, int style, int scorePlayer, int scoreComputer, boolean playerWin) {		
 		super(parent, style);
 		setText("SWT Dialog");
 		this.scorePlayer = scorePlayer;
 		this.scoreComputer = scoreComputer;
+		this.playerWin = playerWin;
 	}
 
 	/**
@@ -60,14 +62,13 @@ public class EndGameDialog extends Dialog {
 		shlEndGame.setSize(270, 218);
 		shlEndGame.setText("Game Over");
 		
-		int userPlayerScore = scorePlayer;
-		int computerPlayerScore = scoreComputer;
-		String winLoseText = (userPlayerScore > computerPlayerScore) ? "You Win!" : "You Lose!";
-		if (userPlayerScore == computerPlayerScore) {
+		
+		String winLoseText = (playerWin == true) ? "You Win!" : "You Lose!";
+		if (scorePlayer == scoreComputer) {
 			winLoseText = "It's a tie!";
 		}
 		
-		String imagePath = (userPlayerScore > computerPlayerScore) ? "/resources/drawable-hdpi/happy.png" : "/resources/drawable-hdpi/unhappy.png";
+		String imagePath = (playerWin == true) ? "/resources/drawable-hdpi/happy.png" : "/resources/drawable-hdpi/unhappy.png";
 		
 		Button btnOk = new Button(shlEndGame, SWT.NONE);
 		btnOk.addMouseListener(new MouseAdapter() {
@@ -81,7 +82,7 @@ public class EndGameDialog extends Dialog {
 		
 		Label lblScore = new Label(shlEndGame, SWT.CENTER);
 		lblScore.setBounds(2, 37, 260, 15);
-		lblScore.setText("Your score is: " + userPlayerScore + " Computer Score is: " + computerPlayerScore);
+		lblScore.setText("Your score is: " + scorePlayer + " Computer Score is: " + scoreComputer);
 		
 		CLabel lblImage = new CLabel(shlEndGame, SWT.CENTER);
 		lblImage.setBounds(89, 58, 86, 91);
