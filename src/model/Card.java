@@ -1,21 +1,21 @@
 package model;
 
 import enums.CardColor;
-import enums.CardNames;
+import enums.CardName;
 
 public class Card {
 	
-	private CardNames name;
+	private CardName name;
 	private CardColor color;
 	private int points;
 	@SuppressWarnings("unused")
 	private String cardImagePath;
 	
 	
-	public CardNames getName() {
+	public CardName getName() {
 		return name;
 	}
-	public void setName(CardNames name) {
+	public void setName(CardName name) {
 		this.name = name;
 	}
 	public CardColor getColor() {

@@ -15,8 +15,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import enums.CardColor;
-import enums.CardNames;
+import enums.CardName;
 import enums.Lead;
+import enums.Winner;
 import model.Card;
 import model.Player;
 
@@ -30,6 +31,7 @@ public class Game66 {
 		protected boolean wait = true; //When true some of the buttons can't be pressed by the user
 		protected boolean closed = false;
 		protected Lead lead;
+		protected Winner winner;
 		protected boolean showComputerCards = false;
 		protected ArrayList<Button> playerCardsButtons = new ArrayList<Button>();
 		protected ArrayList<Button> computerCardsButtons = new ArrayList<Button>();
@@ -70,24 +72,8 @@ public class Game66 {
 		shell.setSize(800, 600);
 		shell.setText("Santase 66");
 		
-		playerCardsButtons.clear();
-		computerCardsButtons.clear();
-		
-		//Creating Player Cards buttons
-		for (int i = 40; i <= 640; i+=120) {
-			Button button = new Button(shell, SWT.NONE);		
-			button.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-			button.setBounds(i, 400, 115, 150);
-			playerCardsButtons.add(button);			
-		}
-		
-		//Creating Computer Cards buttons
-		for (int i = 40; i <= 640; i+=120) {
-			Button button = new Button(shell, SWT.NONE);		
-			button.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
-			button.setBounds(i, 10, 115, 150);
-			computerCardsButtons.add(button);			
-		}
+		createPlayerCards();
+		createComputerCards();
 				
 		btnDeckCards = new Button(shell, SWT.NONE);
 		btnDeckCards.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
@@ -123,9 +109,7 @@ public class Game66 {
 		btnNewGame.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {	
-				startNewGame();
-				render();
-				
+				startNewGame();				
 			}
 		});
 		
@@ -136,119 +120,156 @@ public class Game66 {
 			playerCardsButtons.get(index).addMouseListener(new MouseAdapter() {
 				@Override
 				public  void mouseDown(MouseEvent e) {
-					if(!wait) {
-						if( userPlayer.getCards().size() >= index+1) {				//can't click on empty card
-							if(isTheCardAllowed(userPlayer.getCards().get(index))) {
-								wait = true;
-								//checking for marriage								
-								checkForMarriage(userPlayer.getCards().get(index));		
-								
-								userPlayer.setPlayedCard(userPlayer.getCards().get(index));
-								userPlayer.getCards().remove(index);							
-								//when player leads computer must reply with card.
-								if(lead == Lead.PLAYER) {
-									Card replyCard = computerReplyCard();									
-									computerPlayer.setPlayedCard(replyCard);
-									computerPlayer.getCards().remove(replyCard);
-								}
-								
-								render();								
-							}								
-						}						
-					}					
+					playerCardClick(index);									
 				}				
 			});
 		}
 		
 		btnPlayedCardPlayer.addMouseListener(new MouseAdapter() {
 			@Override
-			public  void mouseDown(MouseEvent e) {				
-				if (wait) {										
-					trickBattle();
-					endGameCheck();
-					//when computer leads computer must play card.
-					if (lead == Lead.COMPUTER) {
-						computerPlayer.setPlayedCard(computerPlayCard());
-						computerPlayer.getCards().remove(computerPlayer.getPlayedCard());
-					}						
-					wait = false;
-					render();					
-				}
-			}
-
-			
+			public  void mouseDown(MouseEvent e) {	
+				playedCard();				
+			}			
 		});
 		
 		//Change with a nine trump card
 		btnTrumpCard.addMouseListener(new MouseAdapter() {
 			@Override
 			public  void mouseDown(MouseEvent e) {
-				//If player has trump nine card, he can change it from the deck
-					if (deck.size() > 1 && deck.size() < 11 && closed == false && lead == Lead.PLAYER) {					
-						if (!getTrumpColorCards(userPlayer).isEmpty()
-								&& getTrumpColorCards(userPlayer).get(0).getName() == CardNames.NINE) {
-							userPlayer.getCards().add(trumpCard);
-							trumpCard = getTrumpColorCards(userPlayer).get(0);
-							userPlayer.getCards().remove(getTrumpColorCards(userPlayer).get(0));
-							render();
-						
-						} 
-					}
+				changeTrumpCard();				
 			}
 		});
 		
 		//Close
 		btnDeckCards.addMouseListener(new MouseAdapter() {
 			@Override
-			public  void mouseDown(MouseEvent e) {	
-				if(lead == Lead.PLAYER && deck.size() > 1 && deck.size() < 11) {					
-					closed = true;
-					render();
-				}
+			public  void mouseDown(MouseEvent e) {
+				closed();				
 			}
 		});
 		
 		btnShowComputerCards.addMouseListener(new MouseAdapter() {
 			@Override
 			public  void mouseDown(MouseEvent e) {				
-				
-				showComputerCards = (showComputerCards == true) ? false : true;
-				String btnShowComputerCadsText = (showComputerCards == true) ? "Hide computer cards" : "Show computer cards";
-				btnShowComputerCards.setText(btnShowComputerCadsText);				
-				render();				
+				showComputerCards(btnShowComputerCards);								
 			}
 		});		
 	}
 	
-
+	/*
+	  Content methods
+	 */
 	
-	private void startNewGame() {
-		
-		deck = getShuffledDeck();		
-		
-		userPlayer.setCards(getPlayingCards());
-		userPlayer.setScore(0);
-		
-		computerPlayer.setCards(getPlayingCards());
-		computerPlayer.setScore(0);
-		
-		lead = Lead.PLAYER;			//Every new game human player leads
-		
-		trumpCard = getTrumpCard();		
-		
-		wait = false;
-		
+	private void createPlayerCards(){
+		//Creating Player Cards buttons
+				for (int i = 40; i <= 640; i+=120) {
+					Button button = new Button(shell, SWT.NONE);		
+					button.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
+					button.setBounds(i, 400, 115, 150);
+					playerCardsButtons.add(button);			
+				}
 	}
 	
-	private void endGame(boolean playerWin) {		
-		EndGameDialog dialog = new EndGameDialog(shell, 1, userPlayer.getScore(), computerPlayer.getScore(), playerWin);
+	private void createComputerCards() {
+		//Creating Computer Cards buttons
+				for (int i = 40; i <= 640; i+=120) {
+					Button button = new Button(shell, SWT.NONE);		
+					button.setImage(SWTResourceManager.getImage(Game66.class, "/resources/drawable-hdpi/card_back.png"));
+					button.setBounds(i, 10, 115, 150);
+					computerCardsButtons.add(button);			
+				}
+	}
+	
+	private void playerCardClick(int index) {
+		if(!wait) {
+			if( userPlayer.getCards().size() >= index+1) {				//can't click on empty card
+				if(isTheCardAllowed(userPlayer.getCards().get(index))) {
+					wait = true;
+					//checking for marriage								
+					checkForMarriage(userPlayer.getCards().get(index));		
+					
+					userPlayer.setPlayedCard(userPlayer.getCards().get(index));
+					userPlayer.getCards().remove(index);							
+					//when player leads computer must reply with card.
+					if(lead == Lead.PLAYER) {
+						Card replyCard = computerReplyCard();									
+						computerPlayer.setPlayedCard(replyCard);
+						computerPlayer.getCards().remove(replyCard);
+					}					
+					render();								
+				}								
+			}						
+		}	
+	}
+
+	private void playedCard(){
+		if (wait) {										
+			trickBattle();
+			endGameCheck();
+			//when computer leads computer must play card.
+			if (lead == Lead.COMPUTER) {
+				computerPlayer.setPlayedCard(computerPlayCard());
+				computerPlayer.getCards().remove(computerPlayer.getPlayedCard());
+			}						
+			wait = false;
+			render();					
+		}
+	}
+	
+	private void changeTrumpCard() {
+		//If player has trump nine card, he can change it from the deck
+		if (deck.size() > 1 && deck.size() < 11 && closed == false && lead == Lead.PLAYER) {					
+			if (!getTrumpColorCards(userPlayer).isEmpty()
+					&& getTrumpColorCards(userPlayer).get(0).getName() == CardName.NINE) {
+				userPlayer.getCards().add(trumpCard);
+				trumpCard = getTrumpColorCards(userPlayer).get(0);
+				userPlayer.getCards().remove(getTrumpColorCards(userPlayer).get(0));
+				render();			
+			} 
+		}
+	}
+	
+	private void closed() {
+		if(lead == Lead.PLAYER && deck.size() > 1 && deck.size() < 11) {					
+			closed = true;
+			render();
+		}
+	}
+		
+	private void showComputerCards(Button btnShowComputerCards) {
+		showComputerCards = (showComputerCards == true) ? false : true;
+		String btnShowComputerCadsText = (showComputerCards == true) ? "Hide computer cards" : "Show computer cards";
+		btnShowComputerCards.setText(btnShowComputerCadsText);				
+		render();
+	}
+	
+	/*
+	  New game end game methods
+	 */
+	
+	private void startNewGame() {		
+		deck = getShuffledDeck();			
+		userPlayer.setCards(getPlayingCards());
+		userPlayer.setScore(0);		
+		computerPlayer.setCards(getPlayingCards());
+		computerPlayer.setScore(0);		
+		lead = Lead.PLAYER;			//Every new game human player leads		
+		trumpCard = getTrumpCard();	
+		computerPlayer.setPlayedCard(null);
+		userPlayer.setPlayedCard(null);
+		closed = false;
+		wait = false;
+		render();		
+	}
+	
+	private void endGame(Winner winner) {		
+		EndGameDialog dialog = new EndGameDialog(shell, 1, userPlayer.getScore(), computerPlayer.getScore(), winner);
 		dialog.open();
 		shell.close();
 		Game66 window = new Game66();
 		window.open();
 	}
-	
-	
+		
 	/*
 	  Computer playing cards logic
 	 */
@@ -437,7 +458,7 @@ public class Game66 {
 		
 		ArrayList<Card> deck = new ArrayList<Card>();
 	
-		for(CardNames cardName : CardNames.values()) {
+		for(CardName cardName : CardName.values()) {
 			for(CardColor cardColor: CardColor.values()) {
 				Card card = new Card();
 				card.setName(cardName);
@@ -526,14 +547,14 @@ public class Game66 {
 		
 		//Checks for marriage queen and king from the same color
 		private void checkForMarriage(Card chekedCard) {
-			if(chekedCard.getName() == CardNames.QUEEN) {
+			if(chekedCard.getName() == CardName.QUEEN) {
 				int marriagePoints = 0;
 				if (deck.size() < 11 && userPlayer.getScore()>0 && lead == Lead.PLAYER) {
 					for (Card card : userPlayer.getCards()) {
-						if (card.getName() == CardNames.KING && card.getColor() == chekedCard.getColor()) {
+						if (card.getName() == CardName.KING && card.getColor() == chekedCard.getColor()) {
 							marriagePoints = 20;
 						}						
-						if (card.getName() == CardNames.KING && card.getColor() == trumpCard.getColor() && card.getColor() == chekedCard.getColor()) {
+						if (card.getName() == CardName.KING && card.getColor() == trumpCard.getColor() && card.getColor() == chekedCard.getColor()) {
 							marriagePoints = 40;
 						}						
 					}
@@ -551,34 +572,34 @@ public class Game66 {
 	
 	private void endGameCheck() {
 		if (lead == Lead.COMPUTER && computerPlayer.getScore() >= 66) {
-			endGame(false);			
+			endGame(Winner.COMPUTER_WINNER);			
 		}
 		
 		if(lead == Lead.PLAYER && userPlayer.getScore()>=66) {
-			endGame(true);
+			endGame(Winner.PLAYER_WINNER);
 		}
 		
 		if (userPlayer.getCards().isEmpty() && computerPlayer.getCards().isEmpty() && deck.isEmpty()) {
 			if(lead == Lead.COMPUTER) {
-				endGame(false);
+				endGame(Winner.COMPUTER_WINNER);
 			}
 			else{
-				endGame(true);
+				endGame(Winner.PLAYER_WINNER);
 			}			
 		}
 		
 		if (userPlayer.getCards().isEmpty() && computerPlayer.getCards().isEmpty() && !deck.isEmpty()) {
 			if(userPlayer.getScore()>=66) {
-				endGame(true);
+				endGame(Winner.PLAYER_WINNER);
 			}
 			else{
-				endGame(false);
+				endGame(Winner.COMPUTER_WINNER);
 			}			
 		}	
 	}
 	
 	
-	//Refresh the view of all the elements of the GUI
+	//Refresh the view of all the GUI elements.
 	private void render() {
 		if (showComputerCards == true) {
 

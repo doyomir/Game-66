@@ -1,18 +1,18 @@
 package logic;
 
-import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.widgets.Button;
-
-
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Dialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.wb.swt.SWTResourceManager;
+
+import enums.Winner;
 
 public class EndGameDialog extends Dialog {
 
@@ -20,19 +20,19 @@ public class EndGameDialog extends Dialog {
 	protected Shell shlEndGame;
 	protected int scorePlayer;
 	protected int scoreComputer;
-	protected boolean playerWin;
+	protected Winner winner;
 
 	/**
 	 * Create the dialog.
 	 * @param parent
 	 * @param style
 	 */
-	public EndGameDialog(Shell parent, int style, int scorePlayer, int scoreComputer, boolean playerWin) {		
+	public EndGameDialog(Shell parent, int style, int scorePlayer, int scoreComputer, Winner winner) {		
 		super(parent, style);
 		setText("SWT Dialog");
 		this.scorePlayer = scorePlayer;
 		this.scoreComputer = scoreComputer;
-		this.playerWin = playerWin;
+		this.winner = winner;
 	}
 
 	/**
@@ -63,12 +63,12 @@ public class EndGameDialog extends Dialog {
 		shlEndGame.setText("Game Over");
 		
 		
-		String winLoseText = (playerWin == true) ? "You Win!" : "You Lose!";
+		String winLoseText = (winner == Winner.PLAYER_WINNER) ? "You Win!" : "You Lose!";
 		if (scorePlayer == scoreComputer) {
 			winLoseText = "It's a tie!";
 		}
 		
-		String imagePath = (playerWin == true) ? "/resources/drawable-hdpi/happy.png" : "/resources/drawable-hdpi/unhappy.png";
+		String imagePath = (winner == Winner.PLAYER_WINNER) ? "/resources/drawable-hdpi/happy.png" : "/resources/drawable-hdpi/unhappy.png";
 		
 		Button btnOk = new Button(shlEndGame, SWT.NONE);
 		btnOk.addMouseListener(new MouseAdapter() {
